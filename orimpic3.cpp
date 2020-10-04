@@ -13,85 +13,77 @@ enum {
 	NOT_HELD_ORIMPIC = 2020,
 	ORIMPIC_START_YEAR = 1896,
 	ARRAY_ORIMPIC = 125,
+};
 
+enum {
+	SUMMER,
+	WINTER,
 };
 
 //プロトタイプ宣言
-int GetTotalOlympicInSummer();
-int GetTotalOlympicInWinter();
-void PrintYearOrimpicSummer();
-void PrintYearOrimpicWinter();
+int GetTotalOlympic(int season);
+void PrintYearOrimpic(int season);
 void PrintResult();
-
 
 void main()
 {
 	PrintResult();	
 }
 
-int GetTotalOlympicInSummer() 
+int GetTotalOlympic(int season)
 {
 	int totalOrimpic = 0;
+	
 	for (int i = ORIMPIC_START_YEAR; i <= CURRENT_YEAR; i++) {
-		if (i % ORIMPIC_CHECK == 0 && i != NOT_HELD_ORIMPIC) {
-			totalOrimpic++;
+		if (season == SUMMER) {
+			if (i % ORIMPIC_CHECK == 0 && i != NOT_HELD_ORIMPIC) {
+				totalOrimpic++;
+			}
 		}
 
+		if (season == WINTER) {
+			if (i % ORIMPIC_CHECK == 2 && i != NOT_HELD_ORIMPIC) {
+				totalOrimpic++;
+			}
+		}
 	}
 	return totalOrimpic;
 }
 
-int GetTotalOlympicInWinter()
-{
-	int totalOrimpic = 0;
-	for (int i = ORIMPIC_START_YEAR; i <= CURRENT_YEAR; i++) {
-		if (i % ORIMPIC_CHECK == 2 && i != NOT_HELD_ORIMPIC) {
-			totalOrimpic++;
-		}
 
-	}
-	return totalOrimpic;
-}
-
-void PrintYearOrimpicSummer()
-{
-	int yearSummerOrimpic[ARRAY_ORIMPIC] = { 0 };
-	int arrayIndexSummer = 0;
+void PrintYearOrimpic(int season) {
+	int yearOrimpic[ARRAY_ORIMPIC] = { 0 };
+	int arrayIndex = 0;
 	for (int i = ORIMPIC_START_YEAR; i < CURRENT_YEAR; i++) {
-		if (i % ORIMPIC_CHECK == 0) {
-			yearSummerOrimpic[arrayIndexSummer] += i;
-			printf("%d\n", yearSummerOrimpic[arrayIndexSummer]);
-			arrayIndexSummer++;
+		if (season == SUMMER) {
+			if (i % ORIMPIC_CHECK == 0) {
+				yearOrimpic[arrayIndex] += i;
+				printf("%d\n", yearOrimpic[arrayIndex]);
+				arrayIndex++;
+			}
 		}
-	}
-}
-
-void PrintYearOrimpicWinter()
-{
-	int yearWinterOrimpic[ARRAY_ORIMPIC] = { 0 };
-	int arrayIndexWinter = 0;
-	for (int i = ORIMPIC_START_YEAR; i < CURRENT_YEAR; i++) {
-		if (i % ORIMPIC_CHECK == 2) {
-			yearWinterOrimpic[arrayIndexWinter] += i;
-			printf("%d\n", yearWinterOrimpic[arrayIndexWinter]);
-			arrayIndexWinter++;
+		
+		if (season == WINTER) {
+			if (i % ORIMPIC_CHECK == 2) {
+				yearOrimpic[arrayIndex] += i;
+				printf("%d\n", yearOrimpic[arrayIndex]);
+				arrayIndex++;
+			}
 		}
+
+
 	}
+
 }
-
-
 
 void PrintResult() {
-	printf("夏季オリンピックを開催した回数の合計：%d\n", GetTotalOlympicInSummer());
+	printf("夏季オリンピックを開催した回数の合計：%d\n", GetTotalOlympic(SUMMER));
 	printf("夏季オリンピックが開催された年：\n");
-	PrintYearOrimpicSummer();
+	PrintYearOrimpic(SUMMER);
 	printf("\n\n");
 	
-	printf("冬季オリンピックを開催した回数の合計：%d\n", GetTotalOlympicInWinter());
+	printf("冬季オリンピックを開催した回数の合計：%d\n", GetTotalOlympic(WINTER));
 	printf("冬季オリンピックが開催された年：\n");
-	PrintYearOrimpicWinter();
+	PrintYearOrimpic(WINTER);
 }
-
-
-
 
