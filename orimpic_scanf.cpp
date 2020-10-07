@@ -9,7 +9,7 @@ enum {
 void main() {
 	int year = 0;
 
-		printf("任意の数字を入力してください。：");
+		printf("任意の西暦を入力してください。：");
 		scanf("%d", &year);
 
 		if (year >= SUMMER_ORIMPIC && year % JUDGMENT_ORIMPIC == 0) {
