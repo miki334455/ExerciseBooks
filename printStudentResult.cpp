@@ -7,6 +7,18 @@ http://psa2.kuciv.kyoto-u.ac.jp/staff/susaki/c/struct1.html
 
 /*
 ----------------------------------------
+勉強内容
+----------------------------------------
+・名前付きのenumとdefineの定義
+・名前付きの構造体の宣言・定義
+・構造体配列の定義
+・関数化
+・キャスト
+・構造体配列を関数に渡す
+*/
+
+/*
+----------------------------------------
 出力結果
 ----------------------------------------
 佐藤 : 英語 = 82   数学 = 72   国語 = 58
@@ -16,7 +28,8 @@ http://psa2.kuciv.kyoto-u.ac.jp/staff/susaki/c/struct1.html
 */
 
 #include <stdio.h>
-#define  NAME_SIZE 10
+#define NAME_SIZE 10
+#define TOTAL_SUBJECT 3
 
 typedef enum {
 	SATO,
@@ -32,56 +45,50 @@ typedef struct {
 	int pEnglish;
 	int pMath;
 	int pJapanese;
+	float pAverage;
 }RESULT_STUDENT;
 
 //プロトタイプ宣言
-void inStudentResult(RESULT_STUDENT* studentResult); //成績データを代入する関数。引数：成績データの構造体
+void calcAverage(RESULT_STUDENT* studentResult); //各生徒の点数の平均を求めて成績データの構造体に代入する関数。引数：成績データの構造体
 void printStudentResult(RESULT_STUDENT* studentResult); //成績を表示する関数。引数：成績データの構造体
 
 void main()
 {
-	RESULT_STUDENT studentResult[NUM_OF_STUDENT];
+	RESULT_STUDENT studentResult[NUM_OF_STUDENT] = {
+		{ "佐藤",82,72,58 },
+		{ "秋山",77,82,79 },
+		{ "永田",61,82,88 },
+		{ "藤田",52,62,39 },
+	};
 
-	//成績データを代入する関数を呼び出す。
-	inStudentResult(studentResult);
-
+	//各生徒の点数の平均を求めて成績データの構造体に代入する関数を呼び出す。
+	calcAverage(studentResult);
 
 	//成績を表示する関数を呼び出す。
 	printStudentResult(studentResult);
 }
 
 
-//成績データを代入する関数。引数：成績データの構造体
-void inStudentResult(RESULT_STUDENT* studentResult)
+//各生徒の点数の平均を求めて成績データの構造体に代入する関数。引数：成績データの構造体
+void calcAverage(RESULT_STUDENT* studentResult)
 {
 	for (int i = 0; i < NUM_OF_STUDENT; i++) {
-		switch (i) {
-		case SATO:
-			studentResult[SATO] = { "佐藤",82,72,58 };
-			break;
-
-		case AKIYAMA:
-			studentResult[AKIYAMA] = { "秋山",77,82,79 };
-			break;
-
-		case NAGATA:
-			studentResult[NAGATA] = { "永田",61,82,88 };
-			break;
-
-		case FUJITA:
-			studentResult[FUJITA] = { "藤田",52,62,39 };
-			break;
-		}
+		//studentResult[i].pAverage = 
+		(studentResult + i)->pAverage =
+		(((float)studentResult[i].pEnglish + (float)studentResult[i].pMath + (float)studentResult[i].pJapanese) / TOTAL_SUBJECT);
 	}
 }
+
+
 
 //成績を表示する関数。引数：成績データの構造体
 void printStudentResult(RESULT_STUDENT* studentResult)
  {
 	for (int i = 0; i < NUM_OF_STUDENT; i++) {
-		printf("%s：", studentResult[i].name);
-		printf("英語 = %d,  ", studentResult[i].pEnglish);
-		printf("数学 = %d,  ", studentResult[i].pMath);
-		printf("国語 = %d\n", studentResult[i].pJapanese);
+		printf("%s：", (studentResult+i)->name);
+		printf("英語 = %d,  ", (studentResult+i)->pEnglish);
+		printf("数学 = %d,  ", (studentResult+i)->pMath);
+		printf("国語 = %d,  ", (studentResult+i)->pJapanese);
+		printf("平均 = %.2f\n", (studentResult + i)->pAverage);
 	}
 }
